@@ -1,4 +1,12 @@
-function result = processDot(im, r)
+function result = processDotLabels(im, binary, r)
+
+if ~exist('binary', 'var')
+    binary = false;
+end
+
+if ~exist('r', 'var')
+    r = 1;
+end
 
 imSize = size(im);
 
@@ -52,5 +60,28 @@ for z = 1:imSize(3)
                 result(x(m), y(m), z) = value;
             end
         end
+    end
+end
+
+if binary
+    % Remove touching voxels and binarize
+
+    for z = 1:imSize(3)
+        slice = result(:,:,z);
+        
+        for i = 1:imSize(1)
+            for j = 1:imSize(2)
+                value = slice(i,j);
+                for ii = max([1, i - 1]):min(imSize(1), i + 1)
+                    for jj = max([1, j - 1]):min(imSize(2), j + 1)
+                        if slice(ii,jj) > 0 && slice(ii, jj) ~= value 
+                            slice(i,j) = 0;
+                        end
+                    end
+                end           
+            end
+        end
+
+        result(:,:,z) = slice > 0;
     end
 end
