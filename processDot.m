@@ -1,4 +1,4 @@
-function result = processDotLabels(im, binary, r)
+function result = processDot(im, binary, r)
 
 if ~exist('binary', 'var')
     binary = false;
@@ -37,8 +37,7 @@ for z = 1:imSize(3)
 end
 
 % Dilate each dot and mask with voronoi diagram
-
-se = strel('octagon', r * 2 + 1);
+se = strel('disk', r * 2 + 1);
 
 for z = 1:imSize(3)
     slice = im(:,:,z);
