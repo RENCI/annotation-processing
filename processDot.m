@@ -23,15 +23,18 @@ for z = 1:imSize(3)
     [x, y] = ind2sub(size(slice), seeds);
     
     d = zeros(1, length(seeds));
-    for i = 1:imSize(1)
-        for j = 1:imSize(2)   
-            for k = 1:length(d)    
-                d(k) = (i - x(k))^2 + (j - y(k))^2;            
+    
+    if ~isempty(d)
+        for i = 1:imSize(1)
+            for j = 1:imSize(2)   
+                for k = 1:length(d)    
+                    d(k) = (i - x(k))^2 + (j - y(k))^2;            
+                end
+    
+                [~, index] = min(d);
+                
+                v(i, j, z) = slice(x(index), y(index));
             end
-
-            [~, index] = min(d);
-            
-            v(i, j, z) = slice(x(index), y(index));
         end
     end
 end
